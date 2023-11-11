@@ -1,0 +1,3 @@
+- Salvar anotação com vírgula torna o "Abrir Arquivo" impossível de ser executado;
+- Computador não possuir entradas de microfone disponíveis pode causar erros;
+- Por conta da falta de teste com gravações de longa duração, é possível que existam erros conforme o programa é executado por mais tempo;
