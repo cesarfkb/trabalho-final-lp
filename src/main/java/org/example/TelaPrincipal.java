@@ -41,7 +41,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
     private boolean gravacaoTerminada;
 
     // Instanciacao de classes
-    private ContadorRunnable cont;
+    private RunnableContador cont;
     private Gravador g;
     private Thread gravador;
     private final CrudDB banco;
@@ -197,7 +197,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
             pausado.set(false);
             terminado.set(false);
 
-            cont = new ContadorRunnable();
+            cont = new RunnableContador();
 
             Thread atualizador = new Thread(this::atualizador);
             gravador = new Thread(this::iniciarGravador);
@@ -386,7 +386,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
     }
 
     private void configuracao() { // FUNCAO QUE CONTROLA O BOTAO DE CONFIGURACAO
-        ConfiguracaoDialog config = new ConfiguracaoDialog(TelaPrincipal.this, g, microfonePos, caminho, optIdioma);
+        DialogConfiguracao config = new DialogConfiguracao(TelaPrincipal.this, g, microfonePos, caminho, idioma);
         if (config.isAplicado()) {
             caminho = config.getCaminho();
             microfonePos = config.getPos();
@@ -416,6 +416,6 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 
     private void abrirArquivo() {
         int qtd = banco.pegarUltimoID();
-        new AbrirDialog(this, qtd, optIdioma);
+        new DialogAbrir(this, qtd, idioma);
     }
 }
