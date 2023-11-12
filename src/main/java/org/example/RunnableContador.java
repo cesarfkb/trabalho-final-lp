@@ -3,11 +3,11 @@ package org.example;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ContadorRunnable implements Runnable{
+public class RunnableContador implements Runnable{
     private AtomicInteger seg = new AtomicInteger(), min = new AtomicInteger(), hora = new AtomicInteger();
     private AtomicBoolean pausar = new AtomicBoolean(false);
 
-    public ContadorRunnable() {
+    public RunnableContador() {
         seg.set(0);
         min.set(0);
         Thread t = new Thread(this);

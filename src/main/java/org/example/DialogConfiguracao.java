@@ -7,23 +7,27 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ResourceBundle;
 
-public class ConfiguracaoDialog extends JDialog implements ActionListener {
+public class DialogConfiguracao extends JDialog implements ActionListener {
 
-    private JComboBox<String> mics;
+    private JComboBox<String> mics, idiomas;
     private JButton aplicar, cancelar, trocar;
     private JFileChooser local;
-    private JLabel microfone, diretorioAtual;
+    private JLabel diretorioAtual;
     private String nome, caminho, caminhoAntigo;
-    private int pos;
+    private int pos, optIdioma;
     private Gravador g;
     private boolean aplicado = false;
+    private ResourceBundle idioma;
 
-    public ConfiguracaoDialog(JFrame fr, Gravador g, int pos, String caminho) {
+    public DialogConfiguracao(JFrame fr, Gravador g, int pos, String caminho, ResourceBundle idioma) {
         super(fr);
         this.caminho = caminho;
         this.pos = pos;
         this.g = g;
+        this.idioma = idioma;
+        idioma = Idioma.idiomasBundles[optIdioma];
         setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
         setTitle("Configurações");
         setSize(new Dimension(550, 200));
@@ -49,18 +53,20 @@ public class ConfiguracaoDialog extends JDialog implements ActionListener {
         mics = new JComboBox<>(microfones);
         mics.setSelectedIndex(pos);
 
-        aplicar = new JButton("Aplicar");
+        idiomas = new JComboBox<>(Idioma.idiomas);
+        idiomas.setSelectedIndex(optIdioma);
+
+        aplicar = new JButton(idioma.getString("config.aplicar"));
         aplicar.addActionListener(this);
-        cancelar = new JButton("Cancelar");
+        cancelar = new JButton(idioma.getString("config.cancelar"));
         cancelar.addActionListener(this);
-        trocar = new JButton("Trocar");
+        trocar = new JButton(idioma.getString("config.trocar"));
         trocar.addActionListener(this);
 
         local = new JFileChooser();
         local.setCurrentDirectory(new java.io.File(caminho));
         local.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        microfone = new JLabel("Escolha o microfone:");
         diretorioAtual = new JLabel("Diretório atual: " + local.getCurrentDirectory().getPath());
         diretorioAtual.setHorizontalAlignment(JLabel.CENTER);
         diretorioAtual.setFont(new Font(diretorioAtual.getFont().getName(), diretorioAtual.getFont().getStyle(), 11));
@@ -73,8 +79,13 @@ public class ConfiguracaoDialog extends JDialog implements ActionListener {
         Container c = getContentPane();
         c.setLayout(new GridLayout(4, 1));
 
+        JPanel painel1 = new JPanel(new FlowLayout());
+        painel1.add(new JLabel("Escolha o idioma:"));
+        painel1.add(idiomas);
+        c.add(painel1);
+
         JPanel painel2 = new JPanel(new FlowLayout());
-        painel2.add(microfone);
+        painel2.add(new JLabel(idioma.getString("config.microfone")));
         painel2.add(mics);
         c.add(painel2);
 
@@ -117,6 +128,8 @@ public class ConfiguracaoDialog extends JDialog implements ActionListener {
         } else if (e.getSource() == aplicar) {
             g.setNome(mics.getItemAt(mics.getSelectedIndex()));
             pos = mics.getSelectedIndex();
+            optIdioma = idiomas.getSelectedIndex();
+            JOptionPane.showMessageDialog(null, Idioma.idiomasBundles[optIdioma].getString("idioma.reiniciar"));
             definirDiretorio(1);
             aplicado = true;
             fechar();
@@ -131,7 +144,7 @@ public class ConfiguracaoDialog extends JDialog implements ActionListener {
         if (i == 0) {
             int opt = local.showSaveDialog(this);
             if (opt == JFileChooser.APPROVE_OPTION) {
-                diretorioAtual.setText("Diretório atual: " + local.getSelectedFile().getPath());
+                diretorioAtual.setText(idioma.getString("config.diretorio") + local.getSelectedFile().getPath());
                 caminhoAntigo = caminho;
                 caminho = local.getSelectedFile().getPath();
             }
@@ -159,5 +172,9 @@ public class ConfiguracaoDialog extends JDialog implements ActionListener {
 
     public void fechar() {
         this.dispose();
+    }
+
+    public int getOptIdioma() {
+        return optIdioma;
     }
 }

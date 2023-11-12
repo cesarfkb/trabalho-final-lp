@@ -136,7 +136,6 @@ public class CrudDB {
             textosCorrigidos.add(texto);
         }
         return textosCorrigidos;
-
     }
 
     private String stringArrayToString(ArrayList<String> textos) {

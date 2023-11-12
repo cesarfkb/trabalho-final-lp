@@ -12,7 +12,7 @@ public class Gravador {
     private final AudioFileFormat.Type ARQUIVOTIPO = AudioFileFormat.Type.WAVE;
     private TargetDataLine linha;
     private String nome, nomeArq;
-    private final FileHandler arquivos;
+    private final TempFileHandler arquivos;
     private int id;
     private final boolean primeiraConcatenacao = true;
 
@@ -27,7 +27,7 @@ public class Gravador {
     }
 
     public Gravador(int id, String caminho, String nome) {
-        arquivos = new FileHandler(id);
+        arquivos = new TempFileHandler(id);
         arqFinal = new File(caminho + "//" + nome + ".wav");
         nomeArq = nome;
     }

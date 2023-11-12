@@ -6,11 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class FileHandler {
+public class TempFileHandler {
     private int id, narq;
     private Path tempDir;
 
-    public FileHandler(int id) {
+    public TempFileHandler(int id) {
         this.id = id;
         narq = 1;
         String nome = "gravacao" + id + "-";
@@ -41,12 +41,12 @@ public class FileHandler {
     }
 
     public ArrayList<String> getCaminho() {
-        ArrayList<String> nomeFileHandler = new ArrayList<>();
+        ArrayList<String> nomeTempFileHandler = new ArrayList<>();
         File[] arquivos = tempDir.toFile().listFiles();
         for (File arquivo : arquivos) {
-            nomeFileHandler.add(arquivo.getPath());
+            nomeTempFileHandler.add(arquivo.getPath());
         }
-        return nomeFileHandler;
+        return nomeTempFileHandler;
     }
 
     public void limpar() {

@@ -9,24 +9,27 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
-public class AbrirDialog extends JDialog implements ActionListener {
+public class DialogAbrir extends JDialog implements ActionListener {
 
     private final int qtd;
     private final HashMap<Integer, JButton> botoes;
     private final HashMap<Integer, JLabel> labels;
+    private ResourceBundle idioma;
 
-    public AbrirDialog(JFrame fr, int i) {
+    public DialogAbrir(JFrame fr, int i, ResourceBundle idioma) {
         super(fr);
         this.qtd = i;
         botoes = new HashMap<>();
         labels = new HashMap<>();
+        this.idioma = idioma;
         iniciarElementos();
         definirLayout();
         setSize(new Dimension(150, 500));
         setVisible(true);
         setLocationRelativeTo(null);
-        setTitle("Abrir Arquivo");
+        setTitle(idioma.getString("gravacao.titulo"));
     }
 
     @Override
@@ -40,7 +43,7 @@ public class AbrirDialog extends JDialog implements ActionListener {
 
     private void iniciarElementos() {
         for (int i = 1; i <= qtd; i++) {
-            JButton botao = new JButton("Gravação " + i);
+            JButton botao = new JButton(idioma.getString("gravacao.nome") + i);
             botao.addActionListener(this);
             botoes.put(i, botao);
         }
@@ -73,11 +76,11 @@ public class AbrirDialog extends JDialog implements ActionListener {
 
         Object[] dados = banco.pegarDadosGravacao(i);
         if (dados == null) {
-            JOptionPane.showMessageDialog(null, "GRAVACAO AINDA NAO CRIADA");
+            JOptionPane.showMessageDialog(null, idioma.getString("gravacao.erro"));
             return;
         }
         ArrayList<String> tempos = gerarLista((String) dados[1]);
-        int[] tempoTotal = ContadorRunnable.calculaTempo((Integer) dados[0]);
+        int[] tempoTotal = RunnableContador.calculaTempo((Integer) dados[0]);
         ArrayList<String> anotacoes = gerarLista((String) dados[2]);
 
         JPanel notas = new JPanel(new GridLayout(anotacoes.size() + 1, 1));
@@ -95,12 +98,12 @@ public class AbrirDialog extends JDialog implements ActionListener {
         notas.add(header);
 
         if (tempos.size() == 1 && tempos.get(0).isEmpty()) {
-            label = new JLabel("NAO EXISTEM ANOTACOES");
+            label = new JLabel("NO NOTES");
             label.setHorizontalAlignment(JLabel.CENTER);
             notas.add(label);
         } else {
             for (int j = 0; j < anotacoes.size(); j++) {
-                duracao = arrumarStringTempo(ContadorRunnable.calculaTempo(Integer.parseInt(tempos.get(j))));
+                duracao = arrumarStringTempo(RunnableContador.calculaTempo(Integer.parseInt(tempos.get(j))));
                 label = new JLabel(duracao + " - " + anotacoes.get(j));
                 label.setHorizontalAlignment(JLabel.CENTER);
                 labels.put(j, label);
@@ -123,7 +126,7 @@ public class AbrirDialog extends JDialog implements ActionListener {
         this.validate();
         this.repaint();
         this.setSize(400, 500);
-        this.setTitle("Exibindo Gravação " + i);
+        this.setTitle(idioma.getString("gravacao.nome") + i);
     }
 
     private ArrayList<String> gerarLista(String textos) {
