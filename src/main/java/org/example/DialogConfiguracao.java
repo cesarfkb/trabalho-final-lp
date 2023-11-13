@@ -21,11 +21,12 @@ public class DialogConfiguracao extends JDialog implements ActionListener {
     private boolean aplicado = false;
     private ResourceBundle idioma;
 
-    public DialogConfiguracao(JFrame fr, Gravador g, int pos, String caminho, ResourceBundle idioma) {
+    public DialogConfiguracao(JFrame fr, Gravador g, int pos, String caminho, int optIdioma, ResourceBundle idioma) {
         super(fr);
         this.caminho = caminho;
         this.pos = pos;
         this.g = g;
+        this.optIdioma = optIdioma;
         this.idioma = idioma;
         idioma = Idioma.idiomasBundles[optIdioma];
         setModalityType(Dialog.DEFAULT_MODALITY_TYPE);

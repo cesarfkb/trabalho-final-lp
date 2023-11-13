@@ -13,9 +13,7 @@ public class Gravador {
     private TargetDataLine linha;
     private String nome, nomeArq;
     private final TempFileHandler arquivos;
-    private int id;
-    private final boolean primeiraConcatenacao = true;
-
+    
     AudioFormat getAudioFormat() {
         float sampleRate = 16000;
         int sampleSizeBits = 16;
@@ -94,13 +92,14 @@ public class Gravador {
                     continue;
                 }
                 AudioInputStream clipAdicionar = AudioSystem.getAudioInputStream(new File(caminho));
-                File arquivoDeletar = new File(caminho);
                 AudioInputStream clipConcatenado = new AudioInputStream(
                         new SequenceInputStream(clipInicial, clipAdicionar),
                         clipInicial.getFormat(),
                         clipInicial.getFrameLength() + clipAdicionar.getFrameLength()
                 );
+                clipInicial.close();
                 clipInicial = clipConcatenado;
+                clipConcatenado.close();
             } catch (UnsupportedAudioFileException | IOException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
                 continue;

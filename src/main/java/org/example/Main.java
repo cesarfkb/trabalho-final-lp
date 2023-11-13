@@ -4,6 +4,8 @@ public class Main {
     public static void main(String[] args) {
          ConexaoDB.criarBanco();
          CrudDB.criarTable();
-         TelaPrincipal tp = new TelaPrincipal();
+         new TelaPrincipal();
+//        CrudDB crud = new CrudDB();
+//        crud.pegarDadosGravacao(2);
     }
 }

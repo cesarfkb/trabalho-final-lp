@@ -4,7 +4,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Idioma {
-    static int opcao = 0;
     static String[] idiomas = { "Português", "Inglês", "Italiano", "Francês", "Espanhol" };
     static ResourceBundle[] idiomasBundles = {
             ResourceBundle.getBundle("arquivo", new Locale("pt", "BR")),

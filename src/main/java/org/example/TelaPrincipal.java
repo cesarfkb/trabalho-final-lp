@@ -215,7 +215,6 @@ public class TelaPrincipal extends JFrame implements ActionListener {
             tAnotar.setEnabled(true);
 
         } else {
-
             terminado.set(true);
             bGravar.setText(idioma.getString("tela1.botao.gravar"));
             bGravar.setEnabled(false);
@@ -227,11 +226,6 @@ public class TelaPrincipal extends JFrame implements ActionListener {
             salvarDados();
 
             id++;
-            /*
-             * pausado.set(!pausado.get());
-             * cont.setPausar(pausado.get());
-             */
-
         }
     }
 
@@ -386,7 +380,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
     }
 
     private void configuracao() { // FUNCAO QUE CONTROLA O BOTAO DE CONFIGURACAO
-        DialogConfiguracao config = new DialogConfiguracao(TelaPrincipal.this, g, microfonePos, caminho, idioma);
+        DialogConfiguracao config = new DialogConfiguracao(TelaPrincipal.this, g, microfonePos, caminho, optIdioma, idioma);
         if (config.isAplicado()) {
             caminho = config.getCaminho();
             microfonePos = config.getPos();
@@ -400,6 +394,7 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 
         tempoZero.set(true);
         pausado.set(true);
+        primeiraAnotacao = true;
 
         bGravar.setEnabled(true);
         bPausar.setEnabled(false);
@@ -416,6 +411,6 @@ public class TelaPrincipal extends JFrame implements ActionListener {
 
     private void abrirArquivo() {
         int qtd = banco.pegarUltimoID();
-        new DialogAbrir(this, qtd, idioma);
+        new DialogAbrirGravacao(this, qtd, idioma);
     }
 }
